@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 
 // Advent of Code - Day 6
-// Date: 10/12/2024
+// Date: 11/12/2024
 
 const GUARD = {
     TOP: '^',
