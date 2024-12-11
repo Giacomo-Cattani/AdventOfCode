@@ -98,6 +98,7 @@ Mark your progress for each day's challenge:
 | Day 8 | 🔲      | 🔲      |
 | Day 9 | 🔲      | 🔲      |
 | Day 10 | 🔲      | 🔲      |
+| Day 11 | 🔲      | 🔲      |
 
 ---
 
