@@ -77,4 +77,4 @@ const input = readFileSync('input.txt', 'utf8').trim();
 
 // Solve the puzzle and print the result
 const result = solvePuzzle(input);
-console.log(`Total X-MAS patterns: ${result}`);
+console.log(result);

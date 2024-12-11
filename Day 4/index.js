@@ -47,12 +47,6 @@ function searchWord(grid, word) {
     return ans;
 }
 
-function printResult(ans) {
-    for (let i = 0; i < ans.length; i++) {
-        console.log("{" + ans[i][0] + "," + ans[i][1] + "}");
-    }
-}
-
 // Function to solve the puzzle
 function solvePuzzle(input) {
     const lines = input.split('\n');
