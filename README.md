@@ -73,7 +73,7 @@ The repository is organized by day:
 ---
 
 ## 🛠 **Technologies Used**
-- **Language**: javascript (feel free to use others if preferred)
+- **Language**: Javascript (feel free to use others if preferred)
 - **Libraries**: Standard Javascript libraries (or additional ones as needed)
 
 ---
@@ -97,11 +97,11 @@ Mark your progress for each day's challenge:
 | Day 7 | ✅      | ✅      |
 | Day 8 | ✅      | ✅      |
 | Day 9 | ✅      | ✅      |
-| Day 10 | ✅      | ✅      |
-| Day 11 | 🔲      | 🔲      |
-| Day 12 | 🔲      | 🔲      |
-| Day 13 | 🔲      | 🔲      |
-| Day 14 | 🔲      | 🔲      |
+| Day 10 | ✅     | ✅      |
+| Day 11 | ✅     | ✅      |
+| Day 12 | 🔲     | 🔲      |
+| Day 13 | 🔲     | 🔲      |
+| Day 14 | 🔲     | 🔲      |
 
 ---
 
