@@ -1,28 +1,32 @@
 import { readFileSync } from 'fs';
 
 // Advent of Code - Day 9
-// Date: 13/12/2024
+// Date: 14/12/2024
 
 // Function to find the positions and count of '.' in the diskmap
 function findDots(diskmap) {
-    const dotPositions = [];
-    let dotCount = 0;
+    const dots = [];
     let startIndex = -1;
-    let queueCount = 0;
+    let length = 0;
 
     for (let i = 0; i < diskmap.length; i++) {
         if (diskmap[i] === '.') {
-            dotPositions.push(i);
-            dotCount++;
             if (startIndex === -1) {
                 startIndex = i;
             }
+            length++;
         } else if (startIndex !== -1) {
-            queueCount++;
+            dots.push({ startIndex, length });
+            startIndex = -1;
+            length = 0;
         }
     }
 
-    return { dotPositions, dotCount, startIndex, queueCount };
+    if (startIndex !== -1) {
+        dots.push({ startIndex, length });
+    }
+
+    return dots;
 }
 
 // Function to solve the puzzle
@@ -33,10 +37,10 @@ function solvePuzzle(input) {
     const diskmap = [];
     let counter = 0;
     let value = 0
-    let length = 0;
+    const numberMoved = []
+    let length = 1;
 
     for (let i = 0; i < transformedArray.length; i++) {
-
         if (i % 2 !== 0) {
             for (let j = 0; j < transformedArray[i]; j++) {
                 diskmap.push('.')
@@ -49,18 +53,36 @@ function solvePuzzle(input) {
         }
     }
 
-    console.log(findDots(diskmap));
+    const arrDots = findDots(diskmap);
 
-    for (let i = diskmap.length - 1; i > 0; i--) {
-        while (diskmap[i] == diskmap[i - 1]) {
-            length++;
+    for (let i = diskmap.length - 1; i >= 0; i--) {
+        length = 1;
+        if (arrDots.find(dot => dot.startIndex < i) && diskmap[i] !== '.') {
+            let counter = i - 1;
+            while (diskmap[i] === diskmap[counter]) {
+                length++;
+                counter--;
+            }
+            const dotVal = arrDots.find(dot => dot.length >= length && dot.startIndex < i);
+            if (dotVal) {
+                diskmap.splice(dotVal.startIndex, length, ...Array(length).fill(diskmap[i]));
+                diskmap.splice(i - (length - 1), length, ...Array(length).fill('.'));
+                numberMoved.push(diskmap[i]);
+                const dotIndex = arrDots.findIndex(dot => dot.startIndex === dotVal.startIndex);
+                if (dotIndex !== -1) {
+                    arrDots[dotIndex].startIndex += length;
+                    arrDots[dotIndex].length -= length;
+                    if (arrDots[dotIndex].length <= 0) {
+                        arrDots.splice(dotIndex, 1);
+                    }
+                }
+            }
+            i = counter + 1;
         }
     }
 
     for (const index in diskmap) {
-        if (diskmap[index] == '.')
-            break
-        value += (index * diskmap[index]);
+        value += diskmap[index] === '.' ? 0 : diskmap[index] * index;
     }
 
     return value;
