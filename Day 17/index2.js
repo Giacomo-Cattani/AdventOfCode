@@ -1,5 +1,10 @@
 import { readFileSync } from 'fs';
 
+
+// Advent of Code - Day 17
+// Date: 17/12/2024
+
+
 // Read input from file or standard input
 const input = readFileSync('input.txt', 'utf8').trim();
 

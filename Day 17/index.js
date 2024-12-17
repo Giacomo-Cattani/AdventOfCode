@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 
-// Advent of Code - Day 1
-// Date: 09/12/2024
+// Advent of Code - Day 17
+// Date: 17/12/2024
 
 const registers = {};
 
