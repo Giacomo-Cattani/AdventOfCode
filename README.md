@@ -104,7 +104,7 @@ Mark your progress for each day's challenge:
 | Day 14 | ✅      | ✅      |
 | Day 15 | ✅      | 🔲      |
 | Day 16 | ✅      | 🔲      |
-| Day 17 |      |       |
+| Day 17 | ✅      | ✅      |
 | Day 18 |      |       |
 | Day 19 |      |       |
 | Day 20 |      |       |
@@ -114,7 +114,6 @@ Mark your progress for each day's challenge:
 | Day 24 |      |       |
 | Day 25 |      |       |
 
----
 
 ## 🤝 **Contributing**
 Feel free to contribute your own solutions or suggest improvements! To contribute:
