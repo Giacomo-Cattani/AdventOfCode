@@ -4,13 +4,36 @@ import { json } from 'stream/consumers';
 // Advent of Code - Day 15
 // Date: 16/12/2024
 
-
 const robot = { row: 0, col: 0 };
 const distance = 100;
-const moves = []
+const movedBoxes = []
+
+function scaleUpWarehouse(grid) {
+    const scaledGrid = [];
+    for (const row of grid) {
+        const newRow1 = [];
+        for (const cell of row) {
+            switch (cell) {
+                case '#':
+                    newRow1.push('#', '#');
+                    break;
+                case 'O':
+                    newRow1.push('[', ']');
+                    break;
+                case '.':
+                    newRow1.push('.', '.');
+                    break;
+                case '@':
+                    newRow1.push('@', '.');
+                    break;
+            }
+        }
+        scaledGrid.push(newRow1);
+    }
+    return scaledGrid;
+}
 
 function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
-    // console.log(row, col, grid[row][col], sumDirection, obj)
     switch (grid[row][col]) {
         case '#':
             return false;
@@ -24,9 +47,9 @@ function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
                 const trow = row - sumDirection[0];
                 const tcol = col - sumDirection[1];
                 grid[trow][tcol] = '.';
-
-                moves.push({ 'points': [[trow, tcol], [row, col]], 'obj': ['.', obj] });
-                return true;
+                if (obj === '[' || obj === ']') {
+                    movedBoxes.push({ from: [trow, tcol], to: [row, col], state: true });
+                }
             }
             return true;
         case '[':
@@ -38,18 +61,14 @@ function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
                 } else {
                     iObj = [[row - 1, col - 1], [row - 1, col]]
                 }
-                console.log(iObj)
                 const tempRow = iObj[0][0] - sumDirection[0];
                 const tempCol = iObj[0][1] - sumDirection[1];
                 const tempRow2 = iObj[1][0] - sumDirection[0];
                 const tempCol2 = iObj[1][1] - sumDirection[1];
-                console.log('resultPrimo:', nextMove(iObj[0][0], iObj[0][1], grid, sumDirection, grid[tempRow][tempCol], false))
-                console.log('resultSecondo:', nextMove(iObj[1][0], iObj[1][1], grid, sumDirection, grid[tempRow2][tempCol2], false))
                 if (nextMove(iObj[0][0], iObj[0][1], grid, sumDirection, grid[tempRow][tempCol], false) && nextMove(iObj[1][0], iObj[1][1], grid, sumDirection, grid[tempRow2][tempCol2], false)) {
 
                     nextMove(iObj[0][0], iObj[0][1], grid, sumDirection, grid[tempRow][tempCol]);
                     nextMove(iObj[1][0], iObj[1][1], grid, sumDirection, grid[tempRow2][tempCol2])
-
 
                     if (obj === '@') {
                         grid[row][col] = obj;
@@ -58,8 +77,12 @@ function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
                         robot.row = row;
                         robot.col = col;
                     }
+
+                    movedBoxes.push({ from: [row, col], to: [row + sumDirection[0], col + sumDirection[1]], state: true });
+
                     return true;
                 }
+                movedBoxes.push({ from: [row, col], to: [row + sumDirection[0], col + sumDirection[1]], state: false });
                 return false;
             } else {
 
@@ -77,10 +100,13 @@ function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
                     const trow = row - sumDirection[0];
                     const tcol = col - sumDirection[1];
                     grid[trow][tcol] = '.';
-
-                    moves.push({ 'points': [[trow, tcol], [row, col]], 'obj': ['.', obj] });
-                    return true;
+                } else {
+                    // If the next move is not valid, revert the row and col changes
+                    row -= sumDirection[0];
+                    col -= sumDirection[1];
                 }
+                movedBoxes.push({ from: [row, col], to: [row + sumDirection[0], col + sumDirection[1]], state: true });
+                return true;
             }
             break;
     }
@@ -92,11 +118,12 @@ function solvePuzzle(input) {
     const [grid, directions] = input.split(/\n\s*\n/);
     const gridLines = grid.replace(/\r/g, '').split('\n');
     const gridArray = gridLines.map(line => line.split(''));
+    const scaledGridArray = scaleUpWarehouse(gridArray);
     const directionQueue = directions.split('');
     let GPScords = 0;
 
-    for (const element in gridArray) {
-        gridArray[element].find((el, index) => {
+    for (const element in scaledGridArray) {
+        scaledGridArray[element].find((el, index) => {
             if (el === '@') {
                 robot.row = parseInt(element);
                 robot.col = index;
@@ -105,35 +132,44 @@ function solvePuzzle(input) {
     }
 
     for (const element of directionQueue) {
-        console.table(gridArray)
-        // console.dir(moves, { depth: null })
+        if (movedBoxes.some(box => box.state === false)) {
+            for (const box of movedBoxes) {
+                if (box.state) {
+                    const [fromRow, fromCol] = box.from;
+                    const [toRow, toCol] = box.to;
+                    if (scaledGridArray[toRow][toCol] !== '.') {
+                        scaledGridArray[fromRow][fromCol] = scaledGridArray[toRow][toCol];
+                        scaledGridArray[toRow][toCol] = '.';
+                    }
+                }
+            }
+        }
+        movedBoxes.length = 0;
+        console.table(scaledGridArray);
         switch (element) {
             case '^':
-                console.log(element);
                 const tempRow = robot.row - 1;
-                nextMove(tempRow, robot.col, gridArray, [-1, 0]);
+                nextMove(tempRow, robot.col, scaledGridArray, [-1, 0]);
                 break;
             case '<':
-                console.log(element);
                 const tempCol = robot.col - 1;
-                nextMove(robot.row, tempCol, gridArray, [0, -1]);
+                nextMove(robot.row, tempCol, scaledGridArray, [0, -1]);
                 break;
             case '>':
-                console.log(element);
                 const tempCol2 = robot.col + 1;
-                nextMove(robot.row, tempCol2, gridArray, [0, 1]);
+                nextMove(robot.row, tempCol2, scaledGridArray, [0, 1]);
                 break;
             case 'v':
-                console.log(element);
                 const tempRow2 = robot.row + 1;
-                nextMove(tempRow2, robot.col, gridArray, [1, 0]);
+                nextMove(tempRow2, robot.col, scaledGridArray, [1, 0]);
                 break;
         }
     }
 
-    for (let i = 0; i < gridArray.length; i++) {
-        for (let j = 0; j < gridArray[i].length; j++) {
-            if (gridArray[i][j] === 'O') {
+    console.table(scaledGridArray);
+    for (let i = 0; i < scaledGridArray.length; i++) {
+        for (let j = 0; j < scaledGridArray[i].length; j++) {
+            if (scaledGridArray[i][j] === '[') {
                 GPScords += distance * i + j;
             }
         }
