@@ -1,8 +1,9 @@
 import { readFileSync } from 'fs';
-import { json } from 'stream/consumers';
 
 // Advent of Code - Day 15
 // Date: 16/12/2024
+
+// Not working for all test cases
 
 const robot = { row: 0, col: 0 };
 const distance = 100;
@@ -57,9 +58,23 @@ function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
             if ((sumDirection[0] == -1 && sumDirection[1] == 0) || (sumDirection[0] == 1 && sumDirection[1] == 0)) {
                 let iObj = []
                 if (grid[row][col] === '[') {
-                    iObj = [[row - 1, col], [row - 1, col + 1]]
+                    switch (sumDirection[0]) {
+                        case -1:
+                            iObj = [[row - 1, col], [row - 1, col + 1]]
+                            break;
+                        case 1:
+                            iObj = [[row + 1, col], [row + 1, col + 1]]
+                            break;
+                    }
                 } else {
-                    iObj = [[row - 1, col - 1], [row - 1, col]]
+                    switch (sumDirection[0]) {
+                        case -1:
+                            iObj = [[row - 1, col - 1], [row - 1, col]]
+                            break;
+                        case 1:
+                            iObj = [[row + 1, col - 1], [row + 1, col]]
+                            break;
+                    }
                 }
                 const tempRow = iObj[0][0] - sumDirection[0];
                 const tempCol = iObj[0][1] - sumDirection[1];
@@ -100,15 +115,13 @@ function nextMove(row, col, grid, sumDirection, obj = '@', move = true) {
                     const trow = row - sumDirection[0];
                     const tcol = col - sumDirection[1];
                     grid[trow][tcol] = '.';
+                    movedBoxes.push({ from: [row, col], to: [row + sumDirection[0], col + sumDirection[1]], state: true });
+                    return true;
                 } else {
-                    // If the next move is not valid, revert the row and col changes
-                    row -= sumDirection[0];
-                    col -= sumDirection[1];
+                    movedBoxes.push({ from: [row, col], to: [row + sumDirection[0], col + sumDirection[1]], state: false });
+                    return false;
                 }
-                movedBoxes.push({ from: [row, col], to: [row + sumDirection[0], col + sumDirection[1]], state: true });
-                return true;
             }
-            break;
     }
 }
 
@@ -119,7 +132,7 @@ function solvePuzzle(input) {
     const gridLines = grid.replace(/\r/g, '').split('\n');
     const gridArray = gridLines.map(line => line.split(''));
     const scaledGridArray = scaleUpWarehouse(gridArray);
-    const directionQueue = directions.split('');
+    const directionQueue = directions.replace(/[\r\n]/g, '').split('');
     let GPScords = 0;
 
     for (const element in scaledGridArray) {
@@ -145,7 +158,6 @@ function solvePuzzle(input) {
             }
         }
         movedBoxes.length = 0;
-        console.table(scaledGridArray);
         switch (element) {
             case '^':
                 const tempRow = robot.row - 1;
@@ -167,11 +179,10 @@ function solvePuzzle(input) {
     }
 
     console.table(scaledGridArray);
-    for (let i = 0; i < scaledGridArray.length; i++) {
-        for (let j = 0; j < scaledGridArray[i].length; j++) {
-            if (scaledGridArray[i][j] === '[') {
-                GPScords += distance * i + j;
-            }
+    for (let iRow = 0; iRow < scaledGridArray.length; iRow++) {
+        for (let jCol = 0; jCol < scaledGridArray[iRow].length; jCol++) {
+            if (scaledGridArray[iRow][jCol] === '[')
+                GPScords += 100 * iRow + jCol; // Top left
         }
     }
     return GPScords;
@@ -179,7 +190,6 @@ function solvePuzzle(input) {
 
 // Read input from file or standard input
 const input = readFileSync('input.txt', 'utf8').trim();
-
 // Solve the puzzle and print the result
 const result = solvePuzzle(input);
 console.log(result);
