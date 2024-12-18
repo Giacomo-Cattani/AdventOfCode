@@ -1,17 +1,14 @@
 import { readFileSync } from 'fs';
 
-// Advent of Code - Day 16
-// Date: 16/12/2024
-
 // Function to solve the puzzle
 function solvePuzzle(input) {
-    // Your code here
     const directions = [
-        { dx: -1, dy: 0 }, // up
-        { dx: 1, dy: 0 },  // down
-        { dx: 0, dy: -1 }, // left
-        { dx: 0, dy: 1 }   // right
+        [0, 1],  // east
+        [-1, 0], // north
+        [0, -1], // west
+        [1, 0],  // south
     ];
+    const directionNames = ["east", "north", "west", "south"];
 
     function parseMaze(input) {
         return input.split('\n').map(line => line.replace(/\r/g, '').split(''));
@@ -31,15 +28,6 @@ function solvePuzzle(input) {
     function dijkstraMazeWithRotation(maze, start, end) {
         const rows = maze.length;
         const cols = maze[0].length;
-
-        // Directions for movement and their corresponding deltas
-        const directions = [
-            [0, 1],  // east
-            [-1, 0], // north
-            [0, -1], // west
-            [1, 0],  // south
-        ];
-        const directionNames = ["east", "north", "west", "south"];
 
         // Helper to check if a position is valid
         function isValid(x, y) {
@@ -66,19 +54,33 @@ function solvePuzzle(input) {
             }))
         );
 
+        // Store all optimal paths
+        const optimalPaths = [];
+        let minCost = Infinity;
+
         // Initialize the starting position and direction
         const [startX, startY] = start;
         const [endX, endY] = end;
         distances[startX][startY]["east"] = 0; // Start facing east
-        enqueue({ x: startX, y: startY, dir: "east" }, 0);
+        enqueue({ x: startX, y: startY, dir: "east", path: [[startX, startY]] }, 0);
 
         while (queue.length > 0) {
             const { node, cost } = dequeue();
-            const { x, y, dir } = node;
+            const { x, y, dir, path } = node;
 
-            // If we've reached the endpoint, return the cost
+            // If we've already exceeded the minimum cost found, skip this branch
+            if (cost > minCost) continue;
+
+            // If we've reached the endpoint
             if (x === endX && y === endY) {
-                return cost;
+                if (cost < minCost) {
+                    // Found a new minimum cost: reset the list of optimal paths
+                    minCost = cost;
+                    optimalPaths.length = 0;
+                }
+                // Add this path to the list of optimal paths
+                optimalPaths.push(path);
+                continue;
             }
 
             // Get the current direction index
@@ -100,21 +102,34 @@ function solvePuzzle(input) {
                     const newCost = cost + 1 + rotationCost; // Add 1 for step cost and rotation cost
 
                     // Update the cost if a shorter path is found
-                    if (newCost < distances[nx][ny][newDir]) {
+                    if (newCost <= distances[nx][ny][newDir]) {
                         distances[nx][ny][newDir] = newCost;
-                        enqueue({ x: nx, y: ny, dir: newDir }, newCost);
+                        enqueue({ x: nx, y: ny, dir: newDir, path: [...path, [nx, ny]] }, newCost);
                     }
                 }
             }
         }
 
-        // If we exit the loop without reaching the end, no path exists
-        return -1;
+        // Return all optimal paths
+        return { minCost, paths: optimalPaths };
     }
 
     const maze = parseMaze(input);
     const { start, end } = findStartAndEnd(maze);
-    return dijkstraMazeWithRotation(maze, start, end);
+    const result = dijkstraMazeWithRotation(maze, start, end);
+
+    // Extract unique nodes from all paths
+    const uniqueNodes = new Set();
+    result.paths.forEach(path => {
+        path.forEach(([x, y]) => {
+            uniqueNodes.add(`${x},${y}`); // Use a string representation to avoid duplicates
+        });
+    });
+
+    // Convert the unique nodes back to coordinate pairs if needed
+    const uniqueNodesArray = Array.from(uniqueNodes).map(node => node.split(',').map(Number));
+
+    return { minCost: result.minCost, paths: result.paths, uniqueNodes: uniqueNodesArray };
 }
 
 // Read input from file or standard input
@@ -122,4 +137,4 @@ const input = readFileSync('input.txt', 'utf8').trim();
 
 // Solve the puzzle and print the result
 const result = solvePuzzle(input);
-console.log(result);
+console.log("Unique nodes:", result.uniqueNodes.length);
