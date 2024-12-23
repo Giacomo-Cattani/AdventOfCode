@@ -109,7 +109,7 @@ Mark your progress for each day's challenge:
 | Day 19 | ✅      | ✅      |
 | Day 20 | ✅      | ✅      |
 | Day 21 | ✅      | ✅      |
-| Day 22 | 🔲      | 🔲      |
+| Day 22 | ✅      | ✅      |
 | Day 23 | 🔲      | 🔲      |
 | Day 24 | 🔲      | 🔲      |
 | Day 25 | 🔲      | 🔲      |
