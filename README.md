@@ -111,8 +111,8 @@ Mark your progress for each day's challenge:
 | Day 21 | ✅      | ✅      |
 | Day 22 | ✅      | ✅      |
 | Day 23 | ✅      | ✅      |
-| Day 24 | 🔲      | 🔲      |
-| Day 25 | 🔲      | 🔲      |
+| Day 24 | ✅      | ✅      |
+| Day 25 | ✅      | ✅      |
 
 
 ## 🤝 **Contributing**
