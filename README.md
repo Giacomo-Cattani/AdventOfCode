@@ -24,11 +24,9 @@ The repository is organized by day:
 📂 AdventOfCode/
 ├── 📁 Year/
 │   ├── 📁 Day 01/
-│   │   ├── input.txt        # Puzzle input for Day 1
 │   │   ├── index.js        # Solution for Part 1 of Day 1
 │   │   └── index2.js        # Solution for Part 2 of Day 1
 │   ├── 📁 Day 02/
-│   │   ├── input.txt        # Puzzle input for Day 2
 │   │   ├── index.js        # Solution for Part 1 of Day 2
 │   │   └── index2.js        # Solution for Part 2 of Day 2
 │   └── ...
@@ -37,7 +35,6 @@ The repository is organized by day:
 ```
 
 - Each **day's folder** contains:
-  - `input.txt`: The puzzle input provided by Advent of Code.
   - `index.js`: The JavaScript script solving the first part that day's challenge.
   - `index2.js`: The JavaScript script solving the second part that day's challenge.
 
@@ -131,7 +128,7 @@ Mark your progress for each day's challenge:
 
 | Day  | Part 1 | Part 2 |
 |------|--------|--------|
-| Day 01 | 🔲      | 🔲      |
+| Day 01 | ✅      | 🔲      |
 | Day 02 | 🔲      | 🔲      |
 | Day 03 | 🔲      | 🔲      |
 | Day 04 | 🔲      | 🔲      |
