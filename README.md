@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🎄✨ Advent of Code Challenge! - 2024 ✨🎄
+# 🎄✨ Advent of Code Challenge! ✨🎄
 
 </div>
-Advent of Code is an annual set of coding challenges that begins every year on **December 1st** and runs until **December 25th**. Each day, a new problem is released at midnight (Eastern Time), featuring fun, holiday-themed puzzles that require logic, programming, and problem-solving skills.
+Advent of Code is an annual set of coding challenges that begins every year on <b>December 1st</b> and runs until <b>December 25th</b> (this year until <b>December 12th</b>). Each day, a new problem is released at midnight (Eastern Time), featuring fun, holiday-themed puzzles that require logic, programming, and problem-solving skills.
 
 This repository is dedicated to documenting and solving the daily challenges of Advent of Code.  
 
@@ -22,14 +22,16 @@ The repository is organized by day:
 
 ```
 📂 AdventOfCode/
-├── 📁 Day 01/
-│   ├── input.txt        # Puzzle input for Day 1
-│   ├── index.js        # Solution for Part 1 of Day 1
-│   └── index2.js        # Solution for Part 2 of Day 1
-├── 📁 Day 02/
-│   ├── input.txt        # Puzzle input for Day 2
-│   ├── index.js        # Solution for Part 1 of Day 2
-│   └── index2.js        # Solution for Part 2 of Day 2
+├── 📁 Year/
+│   ├── 📁 Day 01/
+│   │   ├── input.txt        # Puzzle input for Day 1
+│   │   ├── index.js        # Solution for Part 1 of Day 1
+│   │   └── index2.js        # Solution for Part 2 of Day 1
+│   ├── 📁 Day 02/
+│   │   ├── input.txt        # Puzzle input for Day 2
+│   │   ├── index.js        # Solution for Part 1 of Day 2
+│   │   └── index2.js        # Solution for Part 2 of Day 2
+│   └── ...
 ├── ...
 └── README.md            # Overview of the challenge
 ```
@@ -80,9 +82,12 @@ The repository is organized by day:
 
 ## 🌟 **Progress Tracking**
 
-Start Date: 09/12/2024
+<details>
+<summary><b>2024</b></summary>
+<br>
 
-End Date: ?
+* Start Date: 09/12/2024
+* End Date: 25/12/2024
 
 Mark your progress for each day's challenge:
 
@@ -113,7 +118,33 @@ Mark your progress for each day's challenge:
 | Day 23 | ✅      | ✅      |
 | Day 24 | ✅      | ✅      |
 | Day 25 | ✅      | ✅      |
+</details>
 
+<details>
+<summary><b>2025</b></summary>
+<br>
+
+* Start Date: 01/12/2025
+* End Date: ?
+
+Mark your progress for each day's challenge:
+
+| Day  | Part 1 | Part 2 |
+|------|--------|--------|
+| Day 01 | 🔲      | 🔲      |
+| Day 02 | 🔲      | 🔲      |
+| Day 03 | 🔲      | 🔲      |
+| Day 04 | 🔲      | 🔲      |
+| Day 05 | 🔲      | 🔲      |
+| Day 06 | 🔲      | 🔲      |
+| Day 07 | 🔲      | 🔲      |
+| Day 08 | 🔲      | 🔲      |
+| Day 09 | 🔲      | 🔲      |
+| Day 10 | 🔲      | 🔲      |
+| Day 11 | 🔲      | 🔲      |
+| Day 12 | 🔲      | 🔲      |
+
+</details>
 
 ## 🤝 **Contributing**
 Feel free to contribute your own solutions or suggest improvements! To contribute:
